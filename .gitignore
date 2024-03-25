@@ -1,0 +1,5 @@
+model/*
+*.pyc
+README_internal.md
+data/*
+model/*
