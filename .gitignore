@@ -3,4 +3,4 @@ model/*
 README_internal.md
 data/*
 model/*
-*.ipynb
+*.ipynb 
