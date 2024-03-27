@@ -18,7 +18,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: MLE-PROJECT-CHALLENGE
           push: true
           tags: ezmelillan/ml-challenge:latest
           file: Dockerfile
