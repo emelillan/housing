@@ -1,6 +1,6 @@
 
 # FROM mambaorg/micromamba:1-focal-cuda-11.7.1
-FROM --platform=linux/arm64 mambaorg/micromamba
+FROM --platform=linux/arm64  mambaorg/micromamba
 WORKDIR /app
 COPY . .
 
