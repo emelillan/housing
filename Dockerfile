@@ -1,5 +1,6 @@
 
-FROM mambaorg/micromamba:1-focal-cuda-11.7.1
+# FROM mambaorg/micromamba:1-focal-cuda-11.7.1
+FROM mambaorg/micromamba
 WORKDIR /app
 COPY . .
 

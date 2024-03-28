@@ -4,3 +4,10 @@ README_internal.md
 data/*
 model/*
 *.ipynb 
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb 
+EDA.ipynb
+
+
