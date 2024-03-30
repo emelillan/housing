@@ -1,0 +1,6 @@
+kubectl scale --replicas=4 deployment ml-app -n ingress-nginx 
+
+kubectl config set-context --current --namespace ingress-nginx
+
+### delete bugged pods ##
+kubectl get pod --no-headers | grep -i crash | awk '{print $1}' | while read line; do; kubectl delete pod $line; done 

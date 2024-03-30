@@ -19,5 +19,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5050
----
+  # Rolling update strategy with controlled rollout
+  strategy:
+    rollingUpdate:
+      maxSurge: 25% # Maximum number of pods that can be created beyond the desired replicas
+      maxUnavailable: 1 # Maximum number of unavailable pods during update
 

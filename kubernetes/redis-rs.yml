@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: redis
+  namespace: ingress-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: arm64v8/redis
+          ports:
+            - name: redisport
+              containerPort: 6379
+      volumes:
+        - name: redis-data # Persistent volume claim name
+          persistentVolumeClaim:
+            claimName: redis-pvc

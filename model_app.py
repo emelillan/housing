@@ -57,6 +57,12 @@ def details():
     return jsonify({"Hostname": hostname, "IP": ip})
 
 
+@app.route('/features', methods=['GET'])
+def features():
+    model_features = json.load(open("model/model_features.json", "r"))
+    return jsonify({"features": model_features})
+
+
 @app.route('/search', methods=['POST'])
 def search():
     data = request.get_json()

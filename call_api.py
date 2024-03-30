@@ -7,11 +7,15 @@ import json
 import pandas as pd
 
 
-def call_api_batch():
+dev_ip = "http://0.0.0.0:5055"
+prod_ip = "http://127.0.0.1:80"
+
+
+def call_api_batch(ip=dev_ip):
     """
     Call the API to predict the output based on the input data. Batch prediction is printed.
     """
-    url = 'http://0.0.0.0:5055/predict'
+    url = f'{ip}/predict'
     data = pd.read_csv("data/future_unseen_examples.csv")
     data = data.to_dict()
     data = json.dumps(data)
@@ -22,11 +26,11 @@ def call_api_batch():
     return
 
 
-def call_api_single():
+def call_api_single(ip=dev_ip):
     """
     Call the API to predict the output based on the input data. Single prediction is printed.
     """
-    url = 'http://0.0.0.0:5055/predict'
+    url = f'{ip}/predict'
     data = pd.read_csv("data/future_unseen_examples.csv")
     data = data.sample(1).to_dict()
     data = json.dumps(data)
@@ -37,11 +41,11 @@ def call_api_single():
     return
 
 
-def call_api_search(zipcode):
+def call_api_search(zipcode, ip=dev_ip):
     """
     Call the API to predict the output based on the input data. Single prediction is printed.
     """
-    url = 'http://0.0.0.0:5055/search'
+    url = f'{ip}/search'
     data = {"zipcode": zipcode}
     data = json.dumps(data)
     headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
@@ -54,6 +58,7 @@ def call_api_search(zipcode):
 if __name__ == '__main__':
     # code to use argparser to choose between batch and single prediction
     import argparse
+
     parser = argparse.ArgumentParser(
         description='Choose between batch and single prediction.')
     parser.add_argument('-c', '--choice', type=str,
@@ -63,14 +68,21 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--zipcode', type=str,
                         help='Enter the zip code for search.',
                         required=False)
+    parser.add_argument('-i', '--ip', type=str,
+                        help='Enter the IP address for the API.',
+                        required=False, choices=['dev', 'prod'])
+
     args = parser.parse_args()
+    if args.ip == "prod":
+        ip = prod_ip
+
     if args.choice == "batch":
-        call_api_batch()
+        call_api_batch(ip)
     elif args.choice == "single":
-        call_api_single()
+        call_api_single(ip)
     elif args.zipcode:
         zipcode = args.zipcode
-        call_api_search(zipcode)
+        call_api_search(zipcode, ip)
     else:
         print("Invalid choice. Please choose between batch and single prediction.")
         exit(1)
