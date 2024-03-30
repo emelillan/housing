@@ -19,7 +19,3 @@ spec:
           ports:
             - name: redisport
               containerPort: 6379
-      volumes:
-        - name: redis-data # Persistent volume claim name
-          persistentVolumeClaim:
-            claimName: redis-pvc
