@@ -10,6 +10,9 @@ import socket
 import pandas as pd
 import redis
 
+from pathlib import Path
+import os
+
 app = Flask(__name__)
 r = redis.Redis(host='redis', port=6379)
 
@@ -18,7 +21,8 @@ def check_data(data) -> bool:
     """
     Check if the input data has the correct format for prediction.
     """
-    model_features = json.load(open("model/model_features.json", "r"))
+    top = Path(__file__ + '../..').resolve()
+    model_features = json.load(open(f"{top}/model/model_features.json", "r"))
     for feature in model_features:
         if feature not in data.columns:
             return False
@@ -38,10 +42,11 @@ def data_prep(data) -> pd.DataFrame:
     """
     Prepare the data for prediction, including converting the data types and merging with the demographics data. 
     """
-    dtypes_loaded = json.load(open("model/model_dtypes.json", "r"))
+    top = Path(__file__ + '../..').resolve()
+    dtypes_loaded = json.load(open(f"{top}/model/model_dtypes.json", "r"))
     for key, value in dtypes_loaded.items():
         data[key] = data[key].astype(value)
-    demographics = pd.read_csv("data/zipcode_demographics.csv",
+    demographics = pd.read_csv(f"{top}/data/zipcode_demographics.csv",
                                dtype={'zipcode': str})
     demographics['zipcode'] = demographics['zipcode'].astype(str)
     data['zipcode'] = data['zipcode'].astype(str)
@@ -84,8 +89,9 @@ def predict():
     if not check_data(data):
         return jsonify({'error': 'Input Error'})
 
-    model = joblib.load("model/model.pkl")
-    model_features = json.load(open("model/model_features.json", "r"))
+    top = Path(__file__ + '../..').resolve()
+    model = joblib.load(f"{top}/model/model.pkl")
+    model_features = json.load(open(f"{top}/model/model_features.json", "r"))
     data['predictions'] = model.predict(data[model_features])
 
     for i in range(len(data)):
