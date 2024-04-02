@@ -1,31 +1,32 @@
-# name: Deploy to Kubernetes (Service Account)
+name: Deploy to Kubernetes (Service Account)
 
-# on:
-#   push:
-#     branches: [ main ]
+on:
+  push:
+    branches:
+      - "prod-k8s"
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-#       - name: Login to Docker Hub (**Update with your credentials!**)
-#         uses: docker/login@v2
-#         with:
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub (**Update with your credentials!**)
+        uses: docker/login@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-#       - name: Update Deployment Manifest
-#         run: |
-#           # Update image tag with the latest from Docker Hub (adjust based on your manifest)
-#           sed -i 's/image:.*:<image-tag>/image: <your-image-name>:<latest>/g' deployment.yml
+      - name: Update Deployment Manifest
+        run: |
+          # Update image tag with the latest from Docker Hub (adjust based on your manifest)
+          sed -i 's/image:.*:<image-tag>/image: <your-image-name>:<latest>/g' deployment.yml
 
-#       - name: Deploy to Kubernetes with Service Account
-#         uses: azure/k8s-deploy@v3
-#         with:
-#           args: apply -f deployment.yml
-#           namespace: default  # Update with your target namespace if needed
-#           name: <your-deployment-name>  # Update with your deployment name
-#           service-account: <your-service-account-name>  # Service account with AKS permissions
+      - name: Deploy to Kubernetes with Service Account
+        uses: azure/k8s-deploy@v3
+        with:
+          args: apply -f deployment.yml
+          namespace: default # Update with your target namespace if needed
+          name: <your-deployment-name> # Update with your deployment name
+          service-account: <your-service-account-name> # Service account with AKS permissions
 

@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "main"
+      - "main-arm64"
 
 jobs:
   docker:
@@ -23,7 +23,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ezmelillan/ml-challenge:latest
