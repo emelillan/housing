@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "main-arm64"
+      - "main"
 
 jobs:
   docker:
